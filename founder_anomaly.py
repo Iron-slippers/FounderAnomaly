@@ -3,6 +3,7 @@ from math import pi
 from tqdm import tqdm
 
 import gzip
+import os
 import numpy as np
 import pandas as pd
 
@@ -258,6 +259,9 @@ class FounderAnomaly:
             print("No anomalies were found.")
             return None
 
+        if not os.path.exists(f"log_{start_date}_{finish_date}")
+            os.mkdir(f"log_{start_date}_{finish_date}")
+
         # Создадим несколько графиков для итогового лога
         for name in anomaly_df["name"].unique():
             show = df[df["name"] == name].sort_values("date")
@@ -266,9 +270,9 @@ class FounderAnomaly:
             anomaly_name = show[show["has_anomaly"] == 1]
             fig.add_scatter(x=anomaly_name["date"], y=anomaly_name["call_count"], name=f"Anomaly", mode="markers")
             fig.update_layout(title_text=name)
-            fig.write_image(f"{name}_{start_date}_{finish_date}.png")
+            fig.write_image(f"log_{start_date}_{finish_date}/{name}.png")
 
-        final_df.to_csv(f"log_anomaly_{start_date}_{finish_date}.csv", index=False)
+        final_df.to_csv(f"log_{start_date}_{finish_date}/data_anomaly.csv", index=False)
 
 
 def main() -> None:
